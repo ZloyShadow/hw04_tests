@@ -67,7 +67,7 @@ class PostFormTests(TestCase):
             data=form_data,
             follow=True
         )
-        posts_count = Post.objects.count() 
+        posts_count = Post.objects.count()
         self.assertRedirects(
             response,
             reverse('posts:post_detail', kwargs={'post_id': post.id})
