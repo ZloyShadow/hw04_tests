@@ -50,8 +50,8 @@ class PostsURLTests(TestCase):
                 guest_response = self.guest_client.get(address, follow=True)
                 auth_response = self.auth_client.get(address)
 
-                self.assertEqual(guest_response.reason_phrase, 'OK')
-                self.assertEqual(auth_response.reason_phrase, 'OK')
+                self.assertEqual(guest_response.status_code, 200)
+                self.assertEqual(auth_response.status_code, 200)
 
     def test_create_post_url_exists_at_desired_location(self):
         address = f'{"/create/"}'
@@ -63,7 +63,7 @@ class PostsURLTests(TestCase):
             guest_response,
             f'{"/auth/login/?next=/create/"}'
         )
-        self.assertEqual(auth_response.reason_phrase, 'OK')
+        self.assertEqual(auth_response.status_code, 200)
 
     def test_404_error_return_for_unexisting_page(self):
         address = f'{"/fake/"}'
@@ -71,8 +71,8 @@ class PostsURLTests(TestCase):
         guest_response = self.guest_client.get(address, follow=True)
         auth_response = self.auth_client.get(address)
 
-        self.assertEqual(guest_response.reason_phrase, 'Not Found')
-        self.assertEqual(auth_response.reason_phrase, 'Not Found')
+        self.assertEqual(guest_response.status_code, 404)
+        self.assertEqual(auth_response.status_code, 404)
 
     def test_urls_uses_correct_template(self):
         group = PostsURLTests.group

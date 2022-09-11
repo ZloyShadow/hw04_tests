@@ -31,7 +31,7 @@ class PostFormTests(TestCase):
         posts_count = Post.objects.count()
         form_data = {
             'text': 'Текст поста',
-            'group': self.group.id,
+            'group': PostFormTests.group.id,
         }
         response = self.authorized_user.post(
             reverse('posts:post_create'),
@@ -67,6 +67,7 @@ class PostFormTests(TestCase):
             data=form_data,
             follow=True
         )
+        posts_count = Post.objects.count() 
         self.assertRedirects(
             response,
             reverse('posts:post_detail', kwargs={'post_id': post.id})
@@ -76,6 +77,7 @@ class PostFormTests(TestCase):
         self.assertTrue(post.text == form_data['text'])
         self.assertTrue(post.author == self.post_author)
         self.assertTrue(post.group_id == form_data['group'])
+        self.assertEqual(Post.objects.count(), posts_count)
 
     def test_nonauthorized_user_create_post(self):
         posts_count = Post.objects.count()
